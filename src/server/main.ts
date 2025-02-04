@@ -6,13 +6,14 @@ import { connectDB } from "./db/connectDB.ts";
 
 dotenv.config();
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
 
 app.use("/api/todo", todoRoutes);
 
-ViteExpress.listen(app, 3000, () => {
+ViteExpress.listen(app, +PORT, () => {
   connectDB();
-  console.log("Server is listening on http://localhost:3000...");
+  console.log("Server is listening on port " + PORT + "...");
 });
