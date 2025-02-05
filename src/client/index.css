@@ -12,6 +12,16 @@
   background-color: transparent; /* Hide the track */
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .not-hoverable_card {
+    @apply bg-gray-200 dark:bg-gray-800;
+  }
+
+  .not-hoverable_button {
+    @apply opacity-100;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

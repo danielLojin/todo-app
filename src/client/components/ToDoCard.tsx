@@ -6,16 +6,16 @@ function ToDoCard({ todo }: { todo: Todo }) {
   const { text, finished, _id, changing } = todo;
 
   return (
-    <li className="group flex justify-between items-center p-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg">
+    <li className="group flex justify-between items-center p-4 hover:bg-gray-200 dark:hover:bg-gray-800 not-hoverable_card rounded-lg">
       <p
         className={`${
-          finished && "text-gray-300 dark:text-gray-500 italic line-through"
+          finished && "text-gray-400 dark:text-gray-500 italic line-through"
         } ${changing && finished === false && "opacity-30"}`}
       >
         {text}
       </p>
 
-      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex">
+      <div className="opacity-0 group-hover:opacity-100 not-hoverable_button transition-opacity duration-200 flex">
         <EditModal text={text} finished={finished} id={_id}>
           <button
             disabled={changing}
