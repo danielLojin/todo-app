@@ -1,11 +1,12 @@
 import { todoSchema } from "@/types/zod";
 import toast from "react-hot-toast";
 import { CustomZodError } from "./utils";
+import axios from "axios";
 
 export async function getTodos() {
   try {
-    const res = await fetch("http://localhost:3000/api/todo");
-    const todos: FetchResult<Todos> = await res.json();
+    const axiosRes = await axios.get("/api/todo");
+    const todos: FetchResult<Todos> = axiosRes.data;
 
     if (todos.success) return todos.data;
     else throw new Error(todos.message);
@@ -27,14 +28,16 @@ export async function addTodo({ text }: { text: string }) {
         parseResult.error.flatten().fieldErrors?.text?.at(0)!
       );
 
-    const res = await fetch("http://localhost:3000/api/todo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    });
-    const newTodo: FetchResult<string> = await res.json();
+    const axiosRes = await axios.post(
+      "/api/todo",
+      { text },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const newTodo: FetchResult<string> = axiosRes.data;
 
     if (newTodo.success) return newTodo.data;
     else throw new Error(newTodo.message);
@@ -66,14 +69,16 @@ export async function updateTodo({
         parseResult.error.flatten().fieldErrors?.text?.at(0)!
       );
 
-    const res = await fetch(`http://localhost:3000/api/todo/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text, finished }),
-    });
-    const updatedTodo: FetchResult<string> = await res.json();
+    const axiosRes = await axios.put(
+      `/api/todo/${id}`,
+      { id, text, finished },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const updatedTodo: FetchResult<string> = axiosRes.data;
 
     if (updatedTodo.success) return updatedTodo.data;
     else throw new Error(updatedTodo.message);
@@ -89,13 +94,12 @@ export async function updateTodo({
 
 export async function deleteTodo({ id }: { id: string }) {
   try {
-    const res = await fetch(`http://localhost:3000/api/todo/${id}`, {
-      method: "DELETE",
+    const axiosRes = await axios.delete(`/api/todo/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const deletedTodo: FetchResult<string> = await res.json();
+    const deletedTodo: FetchResult<string> = axiosRes.data;
 
     if (deletedTodo.success) return deletedTodo.data;
     else throw new Error(deletedTodo.message);
